@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eventyay Local Development & Contribution Guide</title>
+<style>
+  :root {
+    --primary: #4f46e5;
+    --primary-dark: #3730a3;
+    --primary-light: #e0e7ff;
+    --accent: #0ea5e9;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --bg-card: #ffffff;
+    --bg-page: #f8fafc;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --code-bg: #0f172a;
+    --code-text: #e2e8f0;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--text-main);
+    background-color: var(--bg-page);
+    line-height: 1.6;
+    margin: 0;
+    padding: 24px 16px;
+  }
+
+  .guide-container {
+    max-width: 960px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  /* Header Banner */
+  .hero-banner {
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #4338ca 70%, #6366f1 100%);
+    color: #ffffff;
+    padding: 40px 36px 32px 36px;
+    position: relative;
+  }
+
+  .hero-banner h1 {
+    margin: 0 0 10px 0;
+    font-size: 24pt;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+
+  .hero-banner .subtitle {
+    font-size: 11.5pt;
+    color: #c7d2fe;
+    margin: 0 0 20px 0;
+    max-width: 760px;
+    line-height: 1.5;
+  }
+
+  .hero-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .meta-badge {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 6px 14px;
+    border-radius: 9999px;
+    font-size: 8.5pt;
+    font-weight: 600;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Content Wrapper */
+  .content-wrap {
+    padding: 36px;
+  }
+
+  h2.section-title {
+    color: var(--primary-dark);
+    font-size: 14pt;
+    font-weight: 700;
+    margin: 36px 0 16px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--primary-light);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  h2.section-title:first-of-type {
+    margin-top: 0;
+  }
+
+  h3.step-title {
+    color: #1e293b;
+    font-size: 11.5pt;
+    font-weight: 700;
+    margin: 22px 0 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .step-num {
+    background: var(--primary);
+    color: #ffffff;
+    font-size: 8.5pt;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 6px;
+  }
+
+  p {
+    margin: 0 0 14px 0;
+    color: #334155;
+    font-size: 9.8pt;
+  }
+
+  /* Tables */
+  .table-responsive {
+    overflow-x: auto;
+    margin: 16px 0 24px 0;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.3pt;
+    text-align: left;
+    background: #ffffff;
+  }
+
+  th {
+    background: #f1f5f9;
+    color: #1e293b;
+    font-weight: 700;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: #334155;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:nth-child(even) td {
+    background: #f8fafc;
+  }
+
+  /* Code Blocks */
+  pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 16px 18px;
+    border-radius: 10px;
+    overflow-x: auto;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-size: 8.8pt;
+    line-height: 1.55;
+    margin: 12px 0 20px 0;
+    border: 1px solid #1e293b;
+  }
+
+  code {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-size: 8.6pt;
+    color: #e11d48;
+    background: #ffe4e6;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  pre code {
+    color: inherit;
+    background: none;
+    padding: 0;
+  }
+
+  .code-comment {
+    color: #94a3b8;
+  }
+
+  .code-cmd {
+    color: #38bdf8;
+    font-weight: 600;
+  }
+
+  /* Callout Boxes */
+  .callout {
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin: 18px 0;
+    font-size: 9.3pt;
+    line-height: 1.55;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .callout-icon {
+    font-size: 14pt;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .callout-content {
+    flex-grow: 1;
+  }
+
+  .callout-warning {
+    background: #fffbeb;
+    border: 1px solid #fef3c7;
+    border-left: 5px solid var(--warning);
+    color: #92400e;
+  }
+
+  .callout-warning strong {
+    color: #78350f;
+  }
+
+  .callout-info {
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    border-left: 5px solid var(--accent);
+    color: #1e40af;
+  }
+
+  .callout-info strong {
+    color: #1e3a8a;
+  }
+
+  .callout-success {
+    background: #f0fdf4;
+    border: 1px solid #dcfce7;
+    border-left: 5px solid var(--success);
+    color: #166534;
+  }
+
+  .callout-success strong {
+    color: #14532d;
+  }
+
+  .callout-danger {
+    background: #fef2f2;
+    border: 1px solid #fee2e2;
+    border-left: 5px solid var(--danger);
+    color: #991b1b;
+  }
+
+  .callout-danger strong {
+    color: #7f1d1d;
+  }
+
+  /* Workflow Steps Grid */
+  .workflow-step-card {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+  }
+
+  .workflow-step-card h4 {
+    margin: 0 0 6px 0;
+    font-size: 10.5pt;
+    font-weight: 700;
+    color: var(--primary-dark);
+  }
+
+  /* AgY Highlight Box */
+  .agy-card {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    color: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 24px 0;
+    box-shadow: 0 4px 15px rgba(15, 23, 42, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .agy-card h3 {
+    margin: 0 0 8px 0;
+    color: #67e8f9;
+    font-size: 13pt;
+    font-weight: 700;
+  }
+
+  .agy-card p {
+    color: #94a3b8;
+    margin-bottom: 14px;
+  }
+
+  .prompt-box {
+    background: #020617;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 16px;
+    color: #e2e8f0;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-size: 8.8pt;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    user-select: all;
+  }
+
+  /* Grid of Troubleshooting Cards */
+  .troubleshoot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin: 18px 0;
+  }
+
+  .troubleshoot-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+
+  .troubleshoot-card h4 {
+    margin: 0 0 8px 0;
+    color: #b91c1c;
+    font-size: 10pt;
+    font-weight: 700;
+  }
+
+  .troubleshoot-card p {
+    font-size: 8.8pt;
+    margin-bottom: 8px;
+  }
+
+  /* Footer */
+  .footer-note {
+    text-align: center;
+    padding: 24px;
+    color: var(--text-muted);
+    font-size: 8.5pt;
+    border-top: 1px solid var(--border);
+    background: #f8fafc;
+  }
+</style>
+</head>
+<body>
+
+<div class="guide-container">
+
+  <!-- Header Banner -->
+  <div class="hero-banner">
+    <h1>Eventyay Local Development & Contribution Guide</h1>
+    <div class="subtitle">Complete guide covering first-time installation, daily development workflow, live-reload debugging, and automation with Antigravity CLI (agy).</div>
+    <div class="hero-meta-row">
+      <div class="meta-badge">📦 Stack: Django 5.2 + PostgreSQL + Redis + Celery + Vite</div>
+      <div class="meta-badge">💻 OS: Windows 11 / WSL2 / Linux / macOS</div>
+      <div class="meta-badge">🤖 Powered by: Antigravity CLI (agy)</div>
+    </div>
+  </div>
+
+  <div class="content-wrap">
+
+    <!-- Section 1 -->
+    <h2 class="section-title">1. Prerequisites Checklist</h2>
+    <p>Ensure these developer tools are installed before setting up the project:</p>
+
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Software</th>
+            <th>Recommended Version</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Git</strong></td>
+            <td>2.40 or higher</td>
+            <td>Source control & branch management</td>
+          </tr>
+          <tr>
+            <td><strong>Docker Desktop</strong></td>
+            <td>Latest (WSL2 Backend enabled)</td>
+            <td>Runs PostgreSQL, Redis, Celery, and Django services</td>
+          </tr>
+          <tr>
+            <td><strong>GitHub CLI (gh)</strong></td>
+            <td>Latest</td>
+            <td>CLI authentication, fork management, and issue tracking</td>
+          </tr>
+          <tr>
+            <td><strong>Antigravity CLI (agy)</strong></td>
+            <td>Latest</td>
+            <td>AI pair programming & automated workspace setup</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Section 2 -->
+    <h2 class="section-title">2. First-Time Setup (Step-by-Step)</h2>
+
+    <!-- Step 2.1 -->
+    <h3 class="step-title"><span class="step-num">Step 1</span> Clone Your Fork & Configure Remotes</h3>
+    <p>Open PowerShell or terminal in your desired working folder (e.g. <code>C:\Projects</code>):</p>
+
+<pre><span class="code-comment"># 1. Log in to GitHub if not already authenticated</span>
+<span class="code-cmd">gh auth login</span>
+
+<span class="code-comment"># 2. Clone your personal fork</span>
+<span class="code-cmd">git clone https://github.com/&lt;YOUR_GITHUB_USERNAME&gt;/eventyay.git</span>
+<span class="code-cmd">cd eventyay</span>
+
+<span class="code-comment"># 3. Add the official upstream repository to keep your fork updated</span>
+<span class="code-cmd">git remote add upstream https://github.com/fossasia/eventyay.git</span>
+
+<span class="code-comment"># 4. Fetch upstream branches and ensure you are on dev</span>
+<span class="code-cmd">git fetch upstream</span>
+<span class="code-cmd">git checkout dev</span>
+<span class="code-cmd">git pull upstream dev</span></pre>
+
+    <!-- Step 2.2 -->
+    <h3 class="step-title"><span class="step-num">Step 2</span> Create Local Environment File</h3>
+<pre><span class="code-comment"># PowerShell (Windows)</span>
+<span class="code-cmd">Copy-Item deployment\env.dev.sample .env.dev</span>
+
+<span class="code-comment"># Bash (macOS / Linux)</span>
+<span class="code-cmd">cp deployment/env.dev.sample .env.dev</span></pre>
+
+    <!-- Step 2.3 -->
+    <h3 class="step-title"><span class="step-num">Step 3</span> ⚠️ Critical Windows Fix: CRLF to LF Conversion</h3>
+
+    <div class="callout callout-warning">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-content">
+        <strong>Windows Gotcha:</strong> Git on Windows checks out shell scripts with CRLF (<code>\r\n</code>). Because <code>docker-compose.yml</code> volume-mounts <code>./app/entrypoint.sh</code> directly into the container, a CRLF line ending causes the container to immediately crash with:
+        <br><code>exec /usr/src/app/entrypoint.sh: no such file or directory</code>.
+      </div>
+    </div>
+
+    <p>Run this one-line command in <strong>PowerShell</strong> to convert the file to pure Unix LF:</p>
+
+<pre><span class="code-cmd">$content = [System.IO.File]::ReadAllText("app\entrypoint.sh").Replace("`r`n", "`n"); [System.IO.File]::WriteAllText("app\entrypoint.sh", $content, (New-Object System.Text.UTF8Encoding($false)))</span></pre>
+
+    <!-- Step 2.4 -->
+    <h3 class="step-title"><span class="step-num">Step 4</span> Start Docker Compose Stack</h3>
+    <p>Build the images and start the full background development stack:</p>
+
+<pre><span class="code-cmd">docker compose up -d --build</span></pre>
+
+    <p>Monitor startup progress (takes 5-7 minutes initially):</p>
+<pre><span class="code-cmd">docker logs -f eventyay-next-web</span></pre>
+
+    <!-- Step 2.5 -->
+    <h3 class="step-title"><span class="step-num">Step 5</span> Create Local Admin Account</h3>
+<pre><span class="code-cmd">docker exec -i eventyay-next-web python manage.py shell -c "from eventyay.base.models import User; u = User.objects.create_adminuser(email='admin@eventyay.local', password='EventyayAdmin123!'); print('Admin created:', u.email)"</span></pre>
+
+    <div class="callout callout-success">
+      <div class="callout-icon">✅</div>
+      <div class="callout-content">
+        <strong>Default Admin Credentials:</strong><br>
+        Email: <code>admin@eventyay.local</code> &nbsp;|&nbsp; Password: <code>EventyayAdmin123!</code>
+      </div>
+    </div>
+
+    <!-- Step 2.6 -->
+    <h3 class="step-title"><span class="step-num">Step 6</span> Access Your Local Instance</h3>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Target</th>
+            <th>URL</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Main Website</strong></td>
+            <td><a href="http://localhost:8000" target="_blank">http://localhost:8000</a></td>
+            <td>Public attendee, speaker, and CFP pages</td>
+          </tr>
+          <tr>
+            <td><strong>Control Dashboard</strong></td>
+            <td><a href="http://localhost:8000/control/" target="_blank">http://localhost:8000/control/</a></td>
+            <td>Organizer administration panel & event settings</td>
+          </tr>
+          <tr>
+            <td><strong>Schedule Editor</strong></td>
+            <td><code>http://localhost:8080</code></td>
+            <td>Vite dev server with HMR for schedule view</td>
+          </tr>
+          <tr>
+            <td><strong>Video Service</strong></td>
+            <td><code>http://localhost:8880</code></td>
+            <td>Vite dev server for video stream integration</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Section 3: Regular Daily Development Routine -->
+    <h2 class="section-title">3. 🔄 Regular Day-to-Day Development Routine</h2>
+    <p>Because <code>app/eventyay</code> is <strong>volume-mounted live</strong> into the container, you almost <strong>never need to rebuild Docker</strong> for everyday programming!</p>
+
+    <h3 class="step-title">3.1 Daily Start & Stop Routine</h3>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>Command</th>
+            <th>What It Does</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Start Working (Morning)</strong></td>
+            <td><code>docker compose up -d</code></td>
+            <td>Spins up all containers in 2-3 seconds. <strong>No rebuild needed</strong>. All database users, events, and records are preserved.</td>
+          </tr>
+          <tr>
+            <td><strong>Pause / Finish (Evening)</strong></td>
+            <td><code>docker compose stop</code></td>
+            <td>Pauses running containers without deleting them. Next start is instantaneous.</td>
+          </tr>
+          <tr>
+            <td><strong>Clean Stop (Free RAM)</strong></td>
+            <td><code>docker compose down</code></td>
+            <td>Stops and removes container processes, but <strong>keeps your database data</strong> in named Docker volumes.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-danger">
+      <div class="callout-icon">🛑</div>
+      <div class="callout-content">
+        <strong>The Golden Rule:</strong> <strong>NEVER run <code>docker compose down -v</code></strong> during daily work! The <code>-v</code> flag completely deletes all database volumes, permanently erasing all your local test events, accounts, and settings.
+      </div>
+    </div>
+
+    <h3 class="step-title">3.2 Live Reloading (Instant Feedback)</h3>
+    <ul>
+      <li><strong>Python Code & Django HTML Templates</strong> (<code>app/eventyay/</code>): The server watches for changes automatically. The moment you save any file in your editor, Django reloads within 1-2 seconds. Simply refresh your browser tab.</li>
+      <li><strong>Vue / Frontend Components</strong> (<code>app/eventyay/webapp/</code>): Vite dev servers run with Hot-Module Replacement (HMR). Changes update live in the browser without even requiring a full page refresh.</li>
+    </ul>
+
+    <h3 class="step-title">3.3 When to Rebuild vs When Not to</h3>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Scenario</th>
+            <th>Command to Run</th>
+            <th>Why</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Daily code editing</strong></td>
+            <td><em>Nothing! Just save your file.</em></td>
+            <td>Mounted directly from your host disk into the container.</td>
+          </tr>
+          <tr>
+            <td><strong>Pulled new updates from upstream</strong></td>
+            <td><code>docker compose up -d --build</code><br><code>docker exec -it eventyay-next-web python manage.py migrate</code></td>
+            <td>Re-syncs Python packages (uv) and applies new database migrations.</td>
+          </tr>
+          <tr>
+            <td><strong>Created or altered a Django Model</strong></td>
+            <td><code>docker exec -it eventyay-next-web python manage.py makemigrations</code><br><code>docker exec -it eventyay-next-web python manage.py migrate</code></td>
+            <td>Generates and applies database schema migrations in PostgreSQL.</td>
+          </tr>
+          <tr>
+            <td><strong>Server hung or unresponsive</strong></td>
+            <td><code>docker restart eventyay-next-web</code></td>
+            <td>Fast restart of only the web service (~5 seconds).</td>
+          </tr>
+          <tr>
+            <td><strong>CSS styles not updating</strong></td>
+            <td><code>docker exec -it eventyay-next-web python manage.py compress --force</code></td>
+            <td>Recompiles compressed static stylesheets.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="step-title">3.4 Running Tests Before Submitting Code</h3>
+    <p>Always verify tests pass inside the container before committing changes:</p>
+<pre><span class="code-comment"># Run the full test suite</span>
+<span class="code-cmd">docker exec -it eventyay-next-web pytest tests/</span>
+
+<span class="code-comment"># Run tests for a specific module (e.g. organizer speaker tests)</span>
+<span class="code-cmd">docker exec -it eventyay-next-web pytest tests/orga/</span></pre>
+
+    <h3 class="step-title">3.5 Daily Git Contribution Workflow</h3>
+    <div class="workflow-step-card">
+      <h4>Step-by-Step Feature Workflow:</h4>
+<pre><span class="code-comment"># 1. Start containers</span>
+<span class="code-cmd">docker compose up -d</span>
+
+<span class="code-comment"># 2. Sync dev branch with upstream</span>
+<span class="code-cmd">git checkout dev</span>
+<span class="code-cmd">git pull upstream dev</span>
+
+<span class="code-comment"># 3. Create a feature branch for your issue</span>
+<span class="code-cmd">git checkout -b feature/my-issue-fix</span>
+
+<span class="code-comment"># 4. Make code edits, test in browser at http://localhost:8000</span>
+
+<span class="code-comment"># 5. Run tests</span>
+<span class="code-cmd">docker exec -it eventyay-next-web pytest tests/</span>
+
+<span class="code-comment"># 6. Commit and push to your fork</span>
+<span class="code-cmd">git add .</span>
+<span class="code-cmd">git commit -m "fix(orga): resolve issue with table sorting"</span>
+<span class="code-cmd">git push -u origin feature/my-issue-fix</span>
+
+<span class="code-comment"># 7. Open Pull Request on GitHub against fossasia/eventyay:dev</span></pre>
+    </div>
+
+    <!-- Section 4: Antigravity CLI Automation -->
+    <h2 class="section-title">4. 🤖 Automation with Antigravity CLI (agy)</h2>
+    <p>When setting up on another machine, open <code>agy</code> in your workspace and paste this single prompt:</p>
+
+    <div class="agy-card">
+      <h3>One-Shot Prompt for `agy`</h3>
+      <p>Click and copy the prompt below into the Antigravity chat window:</p>
+      <div class="prompt-box">Please set up my local Eventyay development environment:
+1. Clone my fork https://github.com/codebytushar/eventyay.git and set upstream to https://github.com/fossasia/eventyay.git on dev branch.
+2. Copy deployment/env.dev.sample to .env.dev.
+3. Ensure app/entrypoint.sh has Unix LF line endings to prevent Windows Docker container crash.
+4. Launch Docker Desktop if not running and execute 'docker compose up -d --build'.
+5. Once migrations and compilemessages finish, create the local admin account admin@eventyay.local / EventyayAdmin123!.
+6. Verify http://localhost:8000 responds with HTTP 200.</div>
+    </div>
+
+    <!-- Section 5: Cheat Sheet -->
+    <h2 class="section-title">5. Quick Commands Cheat Sheet</h2>
+
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>Command</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Start development stack</strong></td>
+            <td><code>docker compose up -d</code></td>
+          </tr>
+          <tr>
+            <td><strong>Stop development stack</strong></td>
+            <td><code>docker compose stop</code></td>
+          </tr>
+          <tr>
+            <td><strong>Check container status</strong></td>
+            <td><code>docker ps</code></td>
+          </tr>
+          <tr>
+            <td><strong>Follow web service logs</strong></td>
+            <td><code>docker logs -f eventyay-next-web</code></td>
+          </tr>
+          <tr>
+            <td><strong>Follow Celery worker logs</strong></td>
+            <td><code>docker logs -f eventyay-next-worker</code></td>
+          </tr>
+          <tr>
+            <td><strong>Restart web container</strong></td>
+            <td><code>docker restart eventyay-next-web</code></td>
+          </tr>
+          <tr>
+            <td><strong>Open Django shell</strong></td>
+            <td><code>docker exec -it eventyay-next-web python manage.py shell</code></td>
+          </tr>
+          <tr>
+            <td><strong>Complete reset of DB & cache</strong></td>
+            <td><code>docker compose down -v</code> followed by <code>docker compose up -d --build</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Section 6: Troubleshooting -->
+    <h2 class="section-title">6. Troubleshooting Common Issues</h2>
+
+    <div class="troubleshoot-grid">
+      <div class="troubleshoot-card">
+        <h4>`no such file or directory: entrypoint.sh`</h4>
+        <p><strong>Cause:</strong> Windows CRLF line endings inside <code>app/entrypoint.sh</code>.</p>
+        <p><strong>Fix:</strong> Run the PowerShell line-ending fix in Step 3, then run <code>docker compose up -d</code>.</p>
+      </div>
+
+      <div class="troubleshoot-card">
+        <h4>`failed to connect to docker API`</h4>
+        <p><strong>Cause:</strong> Docker Desktop daemon is stopped.</p>
+        <p><strong>Fix:</strong> Start Docker Desktop from the Start menu and wait until the whale icon is steady green.</p>
+      </div>
+
+      <div class="troubleshoot-card">
+        <h4>Missing CSS / MIME Type Error</h4>
+        <p><strong>Cause:</strong> Cached or uncompiled static CSS assets.</p>
+        <p><strong>Fix:</strong> Run <code>docker exec -it eventyay-next-web python manage.py compress --force</code> and hard refresh with <code>Ctrl + Shift + R</code>.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">
+    Eventyay Open Source Developer Guide &bull; Prepared for FOSSASIA Contributions &bull; Verified with Antigravity CLI (agy)
+  </div>
+
+</div>
+
+</body>
+</html>
