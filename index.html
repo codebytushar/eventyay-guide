@@ -724,9 +724,19 @@
       </div>
 
       <div class="troubleshoot-card">
-        <h4>Missing CSS / MIME Type Error</h4>
-        <p><strong>Cause:</strong> Cached or uncompiled static CSS assets.</p>
-        <p><strong>Fix:</strong> Run <code>docker exec -it eventyay-next-web python manage.py compress --force</code> and hard refresh with <code>Ctrl + Shift + R</code>.</p>
+        <h4>Missing CSS / Plain Text / MIME Type Error</h4>
+        <p><strong>Symptom:</strong> Pages load as broken, unstyled plain text, or browser console states <code>Refused to apply style... MIME type ('text/html') is not a supported stylesheet</code>.</p>
+        <p><strong>Cause:</strong> Django Compressor requested a CSS bundle hash before compilation finished, caching a 404 HTML page in Redis.</p>
+        <p><strong>4-Step Fix:</strong> Run in PowerShell:</p>
+        <pre style="margin: 6px 0; padding: 10px; font-size: 8pt;"><span class="code-comment"># 1. Flush Redis cache</span>
+<span class="code-cmd">docker exec -i eventyay-next-redis redis-cli FLUSHDB</span>
+<span class="code-comment"># 2. Collect static files</span>
+<span class="code-cmd">docker exec -i eventyay-next-web python manage.py collectstatic --noinput</span>
+<span class="code-comment"># 3. Force re-compress CSS bundles</span>
+<span class="code-cmd">docker exec -i eventyay-next-web python manage.py compress --force</span>
+<span class="code-comment"># 4. Restart web container</span>
+<span class="code-cmd">docker restart eventyay-next-web</span></pre>
+        <p style="margin-top: 6px;">Then perform a <strong>Hard Refresh</strong> in your browser (<code>Ctrl + Shift + R</code>).</p>
       </div>
     </div>
 

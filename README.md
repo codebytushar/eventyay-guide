@@ -273,12 +273,29 @@ Please set up my local Eventyay development environment:
 - **Cause**: Docker Desktop is not running or the daemon is starting up.
 - **Fix**: Open Docker Desktop from the Start Menu, wait until the Docker dashboard shows "Engine running" (green), and retry your command.
 
-### Issue 3: CSS not loading or MIME type error (`text/html` instead of CSS)
-- **Fix**: Rebuild static assets inside the container:
+### Issue 3: Page Loads Unstyled (Plain Text HTML) or CSS MIME Type Error
+- **Symptom**:
+  - The login or admin page loads, but appears as broken, unstyled plain text without CSS.
+  - Browser developer console (`F12` > Console) shows an error like:
+    ```text
+    Refused to apply style from 'http://localhost:8000/static/CACHE/css/output.xxx.css'
+    because its MIME type ('text/html') is not a supported stylesheet MIME type.
+    ```
+- **Why it happens**:
+  Django Compressor attempts to serve pre-compiled CSS from `/static/CACHE/css/output.xxx.css`. If that hash has not yet finished compiling, Django returns a 404 HTML page for the `.css` request, and Redis caches that 404 response. The browser receives HTML instead of CSS and refuses to apply it.
+- **Step-by-Step Fix**:
+  Run this quick 4-step sequence in PowerShell:
   ```powershell
-  docker exec -it eventyay-next-redis redis-cli FLUSHDB
-  docker exec -it eventyay-next-web python manage.py collectstatic --noinput
-  docker exec -it eventyay-next-web python manage.py compress --force
+  # 1. Flush the Redis cache
+  docker exec -i eventyay-next-redis redis-cli FLUSHDB
+
+  # 2. Collect static files
+  docker exec -i eventyay-next-web python manage.py collectstatic --noinput
+
+  # 3. Force re-compression of all CSS bundles
+  docker exec -i eventyay-next-web python manage.py compress --force
+
+  # 4. Restart the web service
   docker restart eventyay-next-web
   ```
-  Then hard refresh browser with `Ctrl + Shift + R`.
+  After restarting, go to your browser and perform a **Hard Refresh** (`Ctrl + Shift + R` on Windows/Linux or `Cmd + Shift + R` on Mac) to clear the browser's cached 404 page. The CSS will render immediately.
